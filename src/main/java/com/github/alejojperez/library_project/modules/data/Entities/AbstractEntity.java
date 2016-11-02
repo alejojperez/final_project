@@ -4,12 +4,16 @@
  */
 package com.github.alejojperez.library_project.modules.data.Entities;
 
-import com.github.alejojperez.library_project.core.database.Query;
+import com.github.alejojperez.library_project.core.database.DBConnection;
+
+import java.sql.ResultSet;
 
 public class AbstractEntity
 {
-    public Query query(String query)
+
+
+    public ResultSet query(String query) throws Exception
     {
-        return new Query(query);
+        return DBConnection.getInstance().getMySqlConnection().createStatement().executeQuery(query);
     }
 }

@@ -11,6 +11,10 @@ import com.google.inject.Injector;
 import de.saxsys.mvvmfx.guice.MvvmfxGuiceApplication;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class App extends MvvmfxGuiceApplication
 {

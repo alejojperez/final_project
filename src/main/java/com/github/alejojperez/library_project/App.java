@@ -5,12 +5,15 @@
 package com.github.alejojperez.library_project;
 
 import com.github.alejojperez.library_project.core.contracts.IPresenter;
+import com.github.alejojperez.library_project.modules.data.repositories.BooksRepository;
 import com.github.alejojperez.library_project.modules.ui.DashboardModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.saxsys.mvvmfx.guice.MvvmfxGuiceApplication;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class App extends MvvmfxGuiceApplication
 {

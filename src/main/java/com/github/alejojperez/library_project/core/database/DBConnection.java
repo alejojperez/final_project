@@ -18,7 +18,7 @@ public class DBConnection
         return ourInstance;
     }
 
-    private DBConnection() { }
+    private DBConnection() { this.initialize(); }
 
     public Connection getMySqlConnection()
     {

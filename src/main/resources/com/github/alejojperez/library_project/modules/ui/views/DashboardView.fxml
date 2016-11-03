@@ -30,14 +30,15 @@
             </children>
         </HBox>
 
-        <TableView fx:id="pinsTable" VBox.vgrow="ALWAYS">
+        <TableView id="books-table" fx:id="booksTable" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn text="Title" />
-                <TableColumn text="Author" />
-                <TableColumn text="Status" />
-                <TableColumn text="Borrower" />
-                <TableColumn text="Check Out Date" />
-                <TableColumn text="Pending request" />
+                <TableColumn fx:id="tcTitle" text="Title" />
+                <TableColumn fx:id="tcAuthor" text="Author" />
+                <TableColumn fx:id="tcStatus" text="Status" />
+                <TableColumn fx:id="tcBorrower" text="Borrower" />
+                <TableColumn fx:id="tcCheckoutDate" text="Checkout Date" />
+                <TableColumn fx:id="tcPendingRequest" text="Pending Request" />
+                <TableColumn fx:id="tcPendingRequestBorrower" text="Pending Borrower" />
             </columns>
 
             <columnResizePolicy>
@@ -61,5 +62,6 @@
 
     <stylesheets>
         <URL value="@../../../CSS/app.css" />
+        <URL value="@../CSS/dashboard_view.css" />
     </stylesheets>
 </VBox>

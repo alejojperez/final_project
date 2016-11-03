@@ -1,6 +1,8 @@
 package com.github.alejojperez.library_project.modules.ui.views;
 
+import com.github.alejojperez.library_project.App;
 import com.github.alejojperez.library_project.modules.data.entities.Book;
+import com.github.alejojperez.library_project.modules.ui.presenters.BookDetailPresenter;
 import com.github.alejojperez.library_project.modules.ui.view_models.DashboardViewModel;
 import com.google.inject.Inject;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -17,13 +19,10 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
-
 import java.net.URL;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class DashboardView implements FxmlView<DashboardViewModel>, Initializable
@@ -60,7 +59,24 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
 
     protected void initializeBooksTable()
     {
+        /**
+         * Set the table content
+         */
         this.booksTable.setItems(FXCollections.observableArrayList(this.viewModel.getBooks()));
+
+        /**
+         * Listen for row double click
+         */
+        this.booksTable.setOnMousePressed(event ->
+        {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+            {
+                Book selected = booksTable.getSelectionModel().getSelectedItem();
+                BookDetailPresenter presenter = App.getCurrentDIModule().getInstance(BookDetailPresenter.class);
+                presenter.setId(selected.getId());
+                presenter.show();
+            }
+        });
 
         /**
          * Table Column Title

@@ -36,4 +36,11 @@ public class BooksRepository extends AbstractRepository
     {
         return this.query("Select * From books");
     }
+
+    public Book find(long id) throws Exception
+    {
+        List books = this.query("Select * From Books Where id = "+id);
+
+        return books.isEmpty() ? null : (Book)books.get(0);
+    }
 }

@@ -10,21 +10,25 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.alejojperez.library_project.modules.ui.views.DashboardView">
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+      prefWidth="500.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.112-ea"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.github.alejojperez.library_project.modules.ui.views.DashboardView">
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
     <children>
         <HBox alignment="TOP_RIGHT" prefHeight="40" spacing="5.0">
             <padding>
-                <Insets bottom="10.0" top="10.0" />
+                <Insets bottom="10.0"/>
             </padding>
 
             <children>
-                <TextField styleClass="form-control" />
+                <TextField prefWidth="186.0" styleClass="form-control"/>
                 <Button styleClass="btn, btn-primary" text="Search">
                     <graphic>
-                        <FontAwesomeIconView glyphName="SEARCH" glyphStyle="-fx-fill: white" />
+                        <FontAwesomeIconView glyphName="SEARCH" glyphStyle="-fx-fill: white"/>
                     </graphic>
                 </Button>
             </children>
@@ -32,36 +36,34 @@
 
         <TableView id="books-table" fx:id="booksTable" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="tcTitle" text="Title" />
-                <TableColumn fx:id="tcAuthor" text="Author" />
-                <TableColumn fx:id="tcStatus" text="Status" />
-                <TableColumn fx:id="tcBorrower" text="Borrower" />
-                <TableColumn fx:id="tcCheckoutDate" text="Checkout Date" />
-                <TableColumn fx:id="tcPendingRequest" text="Pending Request" />
-                <TableColumn fx:id="tcPendingRequestBorrower" text="Pending Borrower" />
+                <TableColumn fx:id="tcTitle" text="Title"/>
+                <TableColumn fx:id="tcAuthor" text="Author"/>
+                <TableColumn fx:id="tcStatus" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Status"/>
             </columns>
 
             <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TableView>
 
         <HBox alignment="CENTER_RIGHT" prefHeight="40" spacing="5.0">
-         <children>
-            <Button styleClass="btn, btn-primary" text="Add...">
-                <graphic>
-                    <FontAwesomeIconView glyphName="PLUS" glyphStyle="-fx-fill: #fff" />
-                </graphic>
-            </Button>
-         </children>
-         <padding>
-            <Insets bottom="10.0" top="10.0" />
-         </padding>
+            <children>
+                <Button styleClass="btn, btn-primary" text="Add...">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="PLUS" glyphStyle="-fx-fill: #fff"/>
+                    </graphic>
+                </Button>
+            </children>
+            <padding>
+                <Insets top="10.0"/>
+            </padding>
         </HBox>
     </children>
 
     <stylesheets>
-        <URL value="@../../../CSS/app.css" />
-        <URL value="@../CSS/dashboard_view.css" />
+        <URL value="@../../../CSS/app.css"/>
+        <URL value="@../CSS/dashboard_view.css"/>
     </stylesheets>
 </VBox>
+
+

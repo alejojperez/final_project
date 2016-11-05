@@ -4,47 +4,59 @@
  */
 package com.github.alejojperez.library_project.modules.data.entities;
 
+import javafx.beans.property.*;
+
 import java.sql.Date;
 
 public class Book extends AbstractEntity
 {
-    public Book() { }
+    public Book()
+    {
+        this.id = new SimpleLongProperty();
+        this.author = new SimpleStringProperty();
+        this.borrower = new SimpleStringProperty();
+        this.checkoutDate = new Date(0);
+        this.pendingRequest = new SimpleBooleanProperty();
+        this.pendingRequestBorrower = new SimpleStringProperty();
+        this.status = new SimpleStringProperty();
+        this.title = new SimpleStringProperty();
+    }
 
-    public long id;
-    public String author;
-    public String borrower;
+    public LongProperty id;
+    public StringProperty author;
+    public StringProperty borrower;
     public Date checkoutDate;
-    public boolean pendingRequest;
-    public String pendingRequestBorrower;
-    public String status;
-    public String title;
+    public BooleanProperty pendingRequest;
+    public StringProperty pendingRequestBorrower;
+    public StringProperty status;
+    public StringProperty title;
 
-    public long getId()
+    public LongProperty getId()
     {
         return this.id;
     }
 
-    public void setId(long id)
+    public void setId(LongProperty id)
     {
         this.id = id;
     }
 
-    public String getAuthor()
+    public StringProperty getAuthor()
     {
         return this.author;
     }
 
-    public void setAuthor(String author)
+    public void setAuthor(StringProperty author)
     {
         this.author = author;
     }
 
-    public String getBorrower()
+    public StringProperty getBorrower()
     {
         return this.borrower;
     }
 
-    public void setBorrower(String borrower)
+    public void setBorrower(StringProperty borrower)
     {
         this.borrower = borrower;
     }
@@ -59,42 +71,42 @@ public class Book extends AbstractEntity
         this.checkoutDate = checkoutDate;
     }
 
-    public boolean isPendingRequest()
+    public BooleanProperty isPendingRequest()
     {
         return this.pendingRequest;
     }
 
-    public void setPendingRequest(boolean pendingRequest)
+    public void setPendingRequest(BooleanProperty pendingRequest)
     {
         this.pendingRequest = pendingRequest;
     }
 
-    public String getPendingRequestBorrower()
+    public StringProperty getPendingRequestBorrower()
     {
         return this.pendingRequestBorrower;
     }
 
-    public void setPendingRequestBorrower(String pendingRequestBorrower)
+    public void setPendingRequestBorrower(StringProperty pendingRequestBorrower)
     {
         this.pendingRequestBorrower = pendingRequestBorrower;
     }
 
-    public String getStatus()
+    public StringProperty getStatus()
     {
         return this.status;
     }
 
-    public void setStatus(String status)
+    public void setStatus(StringProperty status)
     {
         this.status = status;
     }
 
-    public String getTitle()
+    public StringProperty getTitle()
     {
         return this.title;
     }
 
-    public void setTitle(String title)
+    public void setTitle(StringProperty title)
     {
         this.title = title;
     }

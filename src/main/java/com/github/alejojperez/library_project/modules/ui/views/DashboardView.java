@@ -45,15 +45,15 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
         this.initializeNotificationListeners();
     }
 
-    public void loadBooks()
+    //region Helpers
+
+    protected void loadBooks()
     {
         /**
          * Set the table content
          */
         this.booksTable.setItems(FXCollections.observableArrayList(this.viewModel.getBooks()));
     }
-
-    //region Helpers
 
     protected void initializeBooksTable()
     {
@@ -136,8 +136,16 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
 
     protected void initializeNotificationListeners()
     {
-        this.notificationCenter.subscribe("module:ui:CheckinBookCommand", (key, payload) -> {
-            Platform.runLater(() -> loadBooks());
+        this.notificationCenter.subscribe("module:ui:CheckoutBook", (key, payload) -> {
+            Platform.runLater(() -> initializeBooksTable());
+        });
+
+        this.notificationCenter.subscribe("module:ui:CheckinBook", (key, payload) -> {
+            Platform.runLater(() -> initializeBooksTable());
+        });
+
+        this.notificationCenter.subscribe("module:ui:PendingRequestBook", (key, payload) -> {
+            Platform.runLater(() -> initializeBooksTable());
         });
     }
 

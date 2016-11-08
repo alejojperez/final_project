@@ -9,6 +9,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.notifications.NotificationCenter;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -45,6 +46,8 @@ public class BookDetailView implements FxmlView<BookDetailViewModel>, Initializa
     public Button btnSave;
     @FXML
     public VBox vbContainer;
+    @FXML
+    public VBox vbPendingRequest;
 
     @InjectViewModel
     private BookDetailViewModel viewModel;
@@ -59,8 +62,6 @@ public class BookDetailView implements FxmlView<BookDetailViewModel>, Initializa
         this.txtCheckoutDate.textProperty().bindBidirectional(this.viewModel.checkoutDate);
         this.txtBorrower.textProperty().bindBidirectional(this.viewModel.borrower);
         this.txtPendingBorrower.textProperty().bindBidirectional(this.viewModel.pendingRequestBorrower);
-        this.txtPendingBorrower.disableProperty().bind(this.viewModel.pendingRequest);
-        this.btnPendingBorrower.disableProperty().bind(this.viewModel.pendingRequest);
         this.vbContainer.disableProperty().bind(this.viewModel.id.lessThanOrEqualTo(0));
 
         this.viewModel.status.addListener((obs, oldValue, newValue) -> {
@@ -70,15 +71,27 @@ public class BookDetailView implements FxmlView<BookDetailViewModel>, Initializa
                 if(newValue.equals("IN")) {
                     this.btnBorrow.setText("Checkout");
                     this.txtBorrower.setDisable(false);
+                    this.vbPendingRequest.setDisable(true);
                 } else if(newValue.equals("OUT")) {
                     this.btnBorrow.setText("Checkin");
                     this.txtBorrower.setDisable(true);
+                    this.vbPendingRequest.setDisable(false);
                 } else
                     this.btnBorrow.setVisible(false);
             } else {
+                this.vbPendingRequest.setDisable(true);
                 this.btnBorrow.setVisible(false);
             }
         });
     }
 
+    public void checkInOrOutBook()
+    {
+        this.viewModel.getCheckInOrOutBookCommand().execute();
+    }
+
+    public void placeRequest()
+    {
+        this.viewModel.getPlaceRequestBookCommand().execute();
+    }
 }

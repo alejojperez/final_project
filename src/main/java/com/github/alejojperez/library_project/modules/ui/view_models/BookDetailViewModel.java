@@ -33,7 +33,6 @@ public class BookDetailViewModel implements ViewModel
     public SimpleBooleanProperty pendingRequest = new SimpleBooleanProperty();
     public StringProperty pendingRequestBorrower = new SimpleStringProperty();
     public StringProperty status = new SimpleStringProperty();
-
     public StringProperty checkoutDate = new SimpleStringProperty();
 
     public void initialize() {
@@ -46,7 +45,7 @@ public class BookDetailViewModel implements ViewModel
             this.pendingRequestBorrower.setValue(newValue.getPendingRequestBorrower().getValue());
             this.status.setValue(newValue.getStatus().getValue());
 
-            if(newValue.getCheckoutDate() != null)
+            if(newValue.getCheckoutDate() != null && newValue.getCheckoutDate().getTime() > 0)
             {
                 SimpleDateFormat formater = new SimpleDateFormat("MM/dd/yyyy");
                 this.checkoutDate.setValue(formater.format(newValue.getCheckoutDate()));
@@ -58,27 +57,67 @@ public class BookDetailViewModel implements ViewModel
         });
     }
 
-    //<editor-fold desc="CheckinBookCommand">
+    //<editor-fold desc="CheckInOrOutBookCommand">
 
-    private Command checkinBookCommand;
+    private Command checkInOrOutBookCommand;
 
-    public Command getCheckinBookCommand()
+    public Command getCheckInOrOutBookCommand()
     {
-        if(this.checkinBookCommand == null) {
-            this.checkinBookCommand = new DelegateCommand(() -> new Action()
+        if(this.checkInOrOutBookCommand == null) {
+            this.checkInOrOutBookCommand = new DelegateCommand(() -> new Action()
             {
                 @Override
                 protected void action() throws Exception
                 {
                     long idl = id.getValue();
-                    booksRepository.checkingBook(idl);
+                    String notification = "";
 
-                    notificationCenter.publish("module:ui:CheckinBookCommand", idl);
+                    if(status.getValue().equals("IN")) {
+
+                        if(booksRepository.checkoutBook(idl, borrower.getValue()) > 0)
+                            notification = "module:ui:CheckoutBook";
+                    }
+                    else if(status.getValue().equals("OUT")) {
+
+                        if(booksRepository.checkingBook(idl) > 0)
+                            notification = "module:ui:CheckinBook";
+                    }
+
+                    if(!notification.isEmpty())
+                        notificationCenter.publish(notification, idl);
                 }
             }, true);
         }
 
-        return this.checkinBookCommand;
+        return this.checkInOrOutBookCommand;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="PlaceRequestBookCommand">
+
+    private Command placeRequestBookCommand;
+
+    public Command getPlaceRequestBookCommand()
+    {
+        if(this.placeRequestBookCommand == null) {
+            this.placeRequestBookCommand = new DelegateCommand(() -> new Action()
+            {
+                @Override
+                protected void action() throws Exception
+                {
+                    String notification = "";
+
+                    if(booksRepository.placePendingRequest(id.getValue(), pendingRequestBorrower.getValue()) > 0)
+                        notification = "module:ui:PendingRequestBook";
+
+                    if(!notification.isEmpty())
+                        notificationCenter.publish(notification, id.getValue());
+                }
+            }, true);
+        }
+
+        return this.placeRequestBookCommand;
     }
 
     //</editor-fold>

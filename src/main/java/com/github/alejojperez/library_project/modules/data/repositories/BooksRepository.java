@@ -12,59 +12,49 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class BooksRepository
 {
+    //<editor-fold desc="Helpers">
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    protected Statement getStatement() throws Exception
+    {
+        return DBConnection.getInstance().getMySqlConnection().createStatement();
+    }
+
     /**
      * @param query
      * @return
      * @throws Exception
      */
-    public ResultSet query(String query) throws Exception
+    protected ResultSet select(String query) throws Exception
     {
-        return DBConnection.getInstance().getMySqlConnection().createStatement().executeQuery(query);
+        return this.getStatement().executeQuery(query);
     }
 
-    public List all() throws Exception
+    /**
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    protected int update(String query) throws Exception
     {
-        ResultSet resultSet = this.query("Select * From books");
-        ArrayList<Book> response = new ArrayList<>();
-
-        while(resultSet.next())
-        {
-            Book entity = this.getBookObject(resultSet);
-            response.add(entity);
-        }
-
-        return response;
+        return this.getStatement().executeUpdate(query);
     }
 
-    public boolean checkingBook(long id) throws Exception
-    {
-        Book book = this.find(id);
-        String query;
-
-        if(book.isPendingRequest().getValue())
-            query = "Update books Set borrower = pendingRequestBorrower, pendingRequest = 0, checkoutDate = CURDATE()  Where id = "+id;
-        else
-            query = "Update books Set status = 'IN', borrower = NULL Where id = "+id;
-
-
-        ResultSet resultSet = this.query(query);
-
-        return true;
-    }
-
-    public Book find(long id) throws Exception
-    {
-        ResultSet resultSet = this.query("Select * From books Where id = "+id);
-        resultSet.next();
-        return this.getBookObject(resultSet);
-    }
-
+    /**
+     * @param resultSet
+     * @return
+     * @throws Exception
+     */
     protected Book getBookObject(ResultSet resultSet) throws Exception
     {
         Book entity = new Book();
@@ -78,5 +68,80 @@ public class BooksRepository
         entity.setTitle(new SimpleStringProperty(resultSet.getString("title")));
 
         return entity;
+    }
+
+    //</editor-fold>
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    public List all() throws Exception
+    {
+        ResultSet resultSet = this.select("Select * From books");
+        ArrayList<Book> response = new ArrayList<>();
+
+        while(resultSet.next())
+        {
+            Book entity = this.getBookObject(resultSet);
+            response.add(entity);
+        }
+
+        return response;
+    }
+
+    /**
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public int checkingBook(long id) throws Exception
+    {
+        Book book = this.find(id);
+        String query;
+
+        if(book.isPendingRequest().getValue())
+            query = "Update books Set borrower = pendingRequestBorrower, pendingRequestBorrower = NULL, pendingRequest = 0, checkoutDate = CURDATE()  Where id = "+id;
+        else
+            query = "Update books Set status = 'IN', borrower = NULL, checkoutDate = NULL Where id = "+id;
+
+        return this.update(query);
+    }
+
+    /**
+     * @param id
+     * @param borrower
+     * @return
+     * @throws Exception
+     */
+    public int checkoutBook(long id, String borrower) throws Exception
+    {
+        String query = "Update books Set status = 'OUT', borrower = '"+borrower+"', checkoutDate = CURDATE() Where id = "+id;
+
+        return this.update(query);
+    }
+
+    /**
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public Book find(long id) throws Exception
+    {
+        ResultSet resultSet = this.select("Select * From books Where id = "+id);
+        resultSet.next();
+        return this.getBookObject(resultSet);
+    }
+
+    /**
+     * @param id
+     * @param pendingRequestBorrower
+     * @return
+     */
+    public int placePendingRequest(long id, String pendingRequestBorrower) throws Exception
+    {
+        String query = "Update books Set pendingRequest = 1, pendingRequestBorrower = '"+pendingRequestBorrower+"' Where id = "+id;
+
+        return this.update(query);
     }
 }

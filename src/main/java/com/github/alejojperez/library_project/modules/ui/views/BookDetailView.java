@@ -63,6 +63,7 @@ public class BookDetailView implements FxmlView<BookDetailViewModel>, Initializa
         this.txtBorrower.textProperty().bindBidirectional(this.viewModel.borrower);
         this.txtPendingBorrower.textProperty().bindBidirectional(this.viewModel.pendingRequestBorrower);
         this.vbContainer.disableProperty().bind(this.viewModel.id.lessThanOrEqualTo(0));
+        this.btnBorrow.disableProperty().bind(this.txtBorrower.textProperty().isEmpty());
 
         this.viewModel.status.addListener((obs, oldValue, newValue) -> {
             if(newValue != null) {

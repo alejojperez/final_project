@@ -20,9 +20,6 @@ public class DashboardViewModel implements ViewModel
     @Inject
     private BooksRepository booksRepository;
 
-    @Inject
-    private NotificationCenter notificationCenter;
-
     public ObjectProperty<Book> selectedBook() {
         return scope.selectedBookProperty();
     }

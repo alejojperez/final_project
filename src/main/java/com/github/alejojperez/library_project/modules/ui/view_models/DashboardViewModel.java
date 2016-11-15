@@ -6,7 +6,6 @@ import com.github.alejojperez.library_project.modules.ui.scopes.MasterDetailScop
 import com.google.inject.Inject;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
-import de.saxsys.mvvmfx.utils.notifications.NotificationCenter;
 import javafx.beans.property.ObjectProperty;
 
 import java.util.ArrayList;

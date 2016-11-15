@@ -94,6 +94,31 @@ public class BookDetailViewModel implements ViewModel
 
     //</editor-fold>
 
+    //<editor-fold desc="EditBookCommand">
+
+    private Command editBookCommand;
+
+    public Command getEditBookCommand()
+    {
+        if(this.editBookCommand == null) {
+            this.editBookCommand = new DelegateCommand(() -> new Action()
+            {
+                @Override
+                protected void action() throws Exception
+                {
+                    long idl = id.getValue();
+
+                    if(booksRepository.editTitleAndAuthor(idl, title.getValue(), author.getValue()) > 0)
+                        notificationCenter.publish("module:ui:EditBook", idl);
+                }
+            }, true);
+        }
+
+        return this.editBookCommand;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="PlaceRequestBookCommand">
 
     private Command placeRequestBookCommand;

@@ -123,6 +123,20 @@ public class BooksRepository
 
     /**
      * @param id
+     * @param title
+     * @param auhtor
+     * @return
+     * @throws Exception
+     */
+    public int editTitleAndAuthor(long id, String title, String auhtor) throws Exception
+    {
+        String query = "Update books Set title = '"+title+"', author = '"+auhtor+"' Where id = "+id;
+
+        return this.update(query);
+    }
+
+    /**
+     * @param id
      * @return
      * @throws Exception
      */

@@ -20,7 +20,7 @@
                     <Font name="System Bold" size="35.0" />
                 </font>
             </Label>
-            <Button fx:id="btnSave" styleClass="btn, btn-success" text="Save" />
+            <Button fx:id="btnSave" onAction="#saveBookInfo" styleClass="btn, btn-success" text="Save" />
         </children>
         <VBox.margin>
             <Insets bottom="20.0" />

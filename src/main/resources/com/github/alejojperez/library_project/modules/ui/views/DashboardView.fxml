@@ -21,10 +21,10 @@
             </padding>
 
             <children>
-                <TextField prefWidth="186.0" styleClass="form-control" />
-                <Button styleClass="btn, btn-primary" text="Search">
+                <TextField fx:id="txtSearch" prefWidth="186.0" styleClass="form-control" />
+                <Button fx:id="btnLoadBooks" onAction="#loadBooks" styleClass="btn, btn-primary" text="Reload Books">
                     <graphic>
-                        <FontAwesomeIconView glyphName="SEARCH" glyphStyle="-fx-fill: white" />
+                        <FontAwesomeIconView glyphName="REFRESH" glyphStyle="-fx-fill: white" />
                     </graphic>
                 </Button>
             </children>

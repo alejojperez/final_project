@@ -11,12 +11,12 @@ import de.saxsys.mvvmfx.utils.notifications.NotificationCenter;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import java.net.URL;
@@ -31,7 +31,11 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
     @FXML
     public TableColumn<Book, String> tcStatus;
     @FXML
-    private TableView<Book> booksTable;
+    public TableView<Book> booksTable;
+    @FXML
+    public Button btnLoadBooks;
+    @FXML
+    public TextField txtSearch;
 
     @InjectViewModel
     private DashboardViewModel viewModel;
@@ -43,16 +47,46 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
     {
         this.initializeBooksTable();
         this.initializeNotificationListeners();
+        this.initializeBindings();
     }
 
     //region Helpers
 
-    protected void loadBooks()
+    public void loadBooks()
     {
-        /**
-         * Set the table content
-         */
-        this.booksTable.setItems(FXCollections.observableArrayList(this.viewModel.getBooks()));
+        this.txtSearch.setText("");
+
+        ObservableList<Book> masterData = FXCollections.observableArrayList(this.viewModel.getBooks());
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Book> filteredData = new FilteredList<>(masterData, p -> true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        this.txtSearch.textProperty().addListener((observable, oldValue, newValue) ->
+        {
+            filteredData.setPredicate(book -> {
+                // If filter text is empty, display all books.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare title and author of every book with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (book.getTitle().getValue().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches first name.
+                } else if (book.getAuthor().getValue().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches last name.
+                }
+                return false; // Does not match.
+            });
+        });
+
+        this.booksTable.setItems(filteredData);
+    }
+
+    protected void initializeBindings()
+    {
     }
 
     protected void initializeBooksTable()
@@ -145,6 +179,10 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
         });
 
         this.notificationCenter.subscribe("module:ui:PendingRequestBook", (key, payload) -> {
+            Platform.runLater(() -> initializeBooksTable());
+        });
+
+        this.notificationCenter.subscribe("module:ui:EditBook", (key, payload) -> {
             Platform.runLater(() -> initializeBooksTable());
         });
     }

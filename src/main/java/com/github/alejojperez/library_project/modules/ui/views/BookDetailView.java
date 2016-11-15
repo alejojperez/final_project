@@ -52,9 +52,6 @@ public class BookDetailView implements FxmlView<BookDetailViewModel>, Initializa
     @InjectViewModel
     private BookDetailViewModel viewModel;
 
-    @Inject
-    private NotificationCenter notificationCenter;
-
     public void initialize(URL location, ResourceBundle resources)
     {
         this.txtTitle.textProperty().bindBidirectional(this.viewModel.title);

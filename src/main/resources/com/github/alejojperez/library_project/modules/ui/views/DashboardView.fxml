@@ -44,7 +44,7 @@
 
         <HBox alignment="CENTER_RIGHT" prefHeight="40" spacing="5.0">
             <children>
-                <Button styleClass="btn, btn-primary" text="Add...">
+                <Button onAction="#showAddWindow" styleClass="btn, btn-primary" text="Add...">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" glyphStyle="-fx-fill: #fff" />
                     </graphic>

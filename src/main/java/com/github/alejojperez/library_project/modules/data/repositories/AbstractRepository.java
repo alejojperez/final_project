@@ -12,24 +12,30 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class AbstractRepository
 {
-    abstract public Class getEntity() throws ClassNotFoundException;
-
-    abstract public HashMap<String, String> getPropertiesDesc();
+    /**
+     * @return
+     * @throws Exception
+     */
+    protected Statement getStatement() throws Exception
+    {
+        return DBConnection.getInstance().getMySqlConnection().createStatement();
+    }
 
     /**
      * @param query
      * @return
      * @throws Exception
      */
-    public ResultSet executeQuery(String query) throws Exception
+    protected int insert(String query) throws Exception
     {
-        return DBConnection.getInstance().getMySqlConnection().createStatement().executeQuery(query);
+        return this.getStatement().executeUpdate(query);
     }
 
     /**
@@ -37,55 +43,18 @@ public abstract class AbstractRepository
      * @return
      * @throws Exception
      */
-    public List query(String query) throws Exception
+    protected ResultSet select(String query) throws Exception
     {
-        ResultSet resultSet = this.executeQuery(query);
-        ArrayList<AbstractEntity> response = new ArrayList<>();
-
-        while(resultSet.next())
-        {
-            Class itSelf = this.getEntity();
-            AbstractEntity entity = (AbstractEntity)itSelf.newInstance();
-
-            this.getPropertiesDesc().forEach((propertyName, propertyType) -> {
-
-                try {
-                    String propertyTypeMethod = "get"+propertyType;
-                    Method method = resultSet.getClass().getMethod(propertyTypeMethod, String.class);
-                    Object value = method.invoke(resultSet, propertyName);
-
-                    this.invokeSetter(entity, propertyName, value);
-                } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            response.add(entity);
-        }
-
-        return response;
+        return this.getStatement().executeQuery(query);
     }
 
-    //region Helpers
-
-    private void invokeSetter(Object obj, String variableName, Object variableValue)
+    /**
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    protected int update(String query) throws Exception
     {
-        /* variableValue is Object because value can be an Object, Integer, String, etc... */
-        try {
-            /**
-             * Get object of PropertyDescriptor using variable name and class
-             * Note: To use PropertyDescriptor on any field/variable, the field must have both `Setter` and `Getter` method.
-             */
-            PropertyDescriptor objPropertyDescriptor = new PropertyDescriptor(variableName, obj.getClass());
-            /* Set field/variable value using getWriteMethod() */
-            objPropertyDescriptor.getWriteMethod().invoke(obj, variableValue);
-
-        } catch (IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | IntrospectionException e) {
-            /* Java 8: Multiple exception in one catch. Use Different catch block for lower version. */
-            e.printStackTrace();
-        }
+        return this.getStatement().executeUpdate(query);
     }
-
-    //endregion
 }

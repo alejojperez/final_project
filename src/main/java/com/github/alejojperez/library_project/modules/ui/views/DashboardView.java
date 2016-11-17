@@ -1,6 +1,8 @@
 package com.github.alejojperez.library_project.modules.ui.views;
 
+import com.github.alejojperez.library_project.App;
 import com.github.alejojperez.library_project.modules.data.entities.Book;
+import com.github.alejojperez.library_project.modules.ui.presenters.AddBookPresenter;
 import com.github.alejojperez.library_project.modules.ui.view_models.DashboardViewModel;
 import com.google.inject.Inject;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -13,6 +15,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -185,6 +188,15 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
         this.notificationCenter.subscribe("module:ui:EditBook", (key, payload) -> {
             Platform.runLater(() -> initializeBooksTable());
         });
+
+        this.notificationCenter.subscribe("module:ui:AddBook", (key, payload) -> {
+            Platform.runLater(() -> initializeBooksTable());
+        });
+    }
+
+    public void showAddWindow(ActionEvent actionEvent)
+    {
+        (App.getCurrentDIModule().getInstance(AddBookPresenter.class)).show();
     }
 
     //endregion

@@ -17,38 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BooksRepository
+public class BooksRepository extends AbstractRepository
 {
     //<editor-fold desc="Helpers">
-
-    /**
-     * @return
-     * @throws Exception
-     */
-    protected Statement getStatement() throws Exception
-    {
-        return DBConnection.getInstance().getMySqlConnection().createStatement();
-    }
-
-    /**
-     * @param query
-     * @return
-     * @throws Exception
-     */
-    protected ResultSet select(String query) throws Exception
-    {
-        return this.getStatement().executeQuery(query);
-    }
-
-    /**
-     * @param query
-     * @return
-     * @throws Exception
-     */
-    protected int update(String query) throws Exception
-    {
-        return this.getStatement().executeUpdate(query);
-    }
 
     /**
      * @param resultSet
@@ -71,6 +42,13 @@ public class BooksRepository
     }
 
     //</editor-fold>
+
+    public int addBook(String title, String author) throws Exception
+    {
+        String query = ("Insert Into books Set title = '"+title+"', author = '"+author+"' ");
+
+        return this.insert(query);
+    }
 
     /**
      * @return

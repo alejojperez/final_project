@@ -1,4 +1,4 @@
-package com.github.alejojperez.library_project.modules.ui;
+package com.github.alejojperez.library_project.modules.ui.presenters;
 
 import com.github.alejojperez.library_project.App;
 import com.github.alejojperez.library_project.core.contracts.IPresenter;

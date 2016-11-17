@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <VBox fx:id="vbContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.alejojperez.library_project.modules.ui.views.BookDetailView">
     <padding>
@@ -20,7 +21,16 @@
                     <Font name="System Bold" size="35.0" />
                 </font>
             </Label>
-            <Button fx:id="btnSave" onAction="#saveBookInfo" styleClass="btn, btn-success" text="Save" />
+            <Button fx:id="btnSave" onAction="#saveBookInfo" styleClass="btn, btn-success" text="Save">
+                <graphic>
+                    <FontAwesomeIconView glyphName="FLOPPY_ALT" glyphStyle="-fx-fill: #fff" />
+                </graphic>
+            </Button>
+            <Button fx:id="btnDelete" onAction="#deleteBook" styleClass="btn, btn-danger" text="Delete">
+                <graphic>
+                    <FontAwesomeIconView glyphName="TIMES" glyphStyle="-fx-fill: #fff" />
+                </graphic>
+            </Button>
         </children>
         <VBox.margin>
             <Insets bottom="20.0" />

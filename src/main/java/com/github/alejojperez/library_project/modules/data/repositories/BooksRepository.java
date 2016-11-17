@@ -101,6 +101,18 @@ public class BooksRepository extends AbstractRepository
 
     /**
      * @param id
+     * @return
+     * @throws Exception
+     */
+    public int deleteBook(long id) throws Exception
+    {
+        String query = ("Delete From books Where id = "+id);
+
+        return this.delete(query);
+    }
+
+    /**
+     * @param id
      * @param title
      * @param auhtor
      * @return

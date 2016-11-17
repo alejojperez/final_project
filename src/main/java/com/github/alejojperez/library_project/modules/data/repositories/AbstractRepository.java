@@ -33,6 +33,16 @@ public abstract class AbstractRepository
      * @return
      * @throws Exception
      */
+    protected int delete(String query) throws Exception
+    {
+        return this.getStatement().executeUpdate(query);
+    }
+
+    /**
+     * @param query
+     * @return
+     * @throws Exception
+     */
     protected int insert(String query) throws Exception
     {
         return this.getStatement().executeUpdate(query);

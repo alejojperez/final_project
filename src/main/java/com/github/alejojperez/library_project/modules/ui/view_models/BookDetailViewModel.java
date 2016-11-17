@@ -131,18 +131,36 @@ public class BookDetailViewModel implements ViewModel
                 @Override
                 protected void action() throws Exception
                 {
-                    String notification = "";
-
                     if(booksRepository.placePendingRequest(id.getValue(), pendingRequestBorrower.getValue()) > 0)
-                        notification = "module:ui:PendingRequestBook";
-
-                    if(!notification.isEmpty())
-                        notificationCenter.publish(notification, id.getValue());
+                        notificationCenter.publish("module:ui:PendingRequestBook", id.getValue());
                 }
             }, true);
         }
 
         return this.placeRequestBookCommand;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="DeleteBookCommand">
+
+    private Command deleteBookCommand;
+
+    public Command getDeleteBookCommand()
+    {
+        if(this.deleteBookCommand == null) {
+            this.deleteBookCommand = new DelegateCommand(() -> new Action()
+            {
+                @Override
+                protected void action() throws Exception
+                {
+                    if(booksRepository.deleteBook(id.getValue()) > 0)
+                        notificationCenter.publish("module:ui:DeleteBook", id.getValue());
+                }
+            }, true);
+        }
+
+        return this.deleteBookCommand;
     }
 
     //</editor-fold>

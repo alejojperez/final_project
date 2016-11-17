@@ -192,6 +192,10 @@ public class DashboardView implements FxmlView<DashboardViewModel>, Initializabl
         this.notificationCenter.subscribe("module:ui:AddBook", (key, payload) -> {
             Platform.runLater(() -> initializeBooksTable());
         });
+
+        this.notificationCenter.subscribe("module:ui:DeleteBook", (key, payload) -> {
+            Platform.runLater(() -> initializeBooksTable());
+        });
     }
 
     public void showAddWindow(ActionEvent actionEvent)

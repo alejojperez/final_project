@@ -3,6 +3,7 @@ package com.github.alejojperez.library_project.modules.ui.views;
 import com.github.alejojperez.library_project.modules.ui.view_models.BookDetailViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -30,6 +31,8 @@ public class BookDetailView implements FxmlView<BookDetailViewModel>, Initializa
     public Button btnPendingBorrower;
     @FXML
     public Button btnSave;
+    @FXML
+    public Button btnDelete;
     @FXML
     public VBox vbContainer;
     @FXML
@@ -82,5 +85,10 @@ public class BookDetailView implements FxmlView<BookDetailViewModel>, Initializa
     public void placeRequest()
     {
         this.viewModel.getPlaceRequestBookCommand().execute();
+    }
+
+    public void deleteBook()
+    {
+        this.viewModel.getDeleteBookCommand().execute();
     }
 }
